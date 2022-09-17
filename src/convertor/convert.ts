@@ -282,8 +282,8 @@ const en2ml = (word: string): string[] => {
 	return res;
 };
 
-en2ml("omana").forEach((word) => {
-	console.log(word);
-});
+// en2ml("omana").forEach((word) => {
+// 	console.log(word);
+// });
 
 export default en2ml;
