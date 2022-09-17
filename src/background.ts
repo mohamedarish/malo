@@ -13,5 +13,5 @@ browser.menus.onClicked.addListener(async (info) => {
 
     if (!info.selectionText) return;
 
-    const text = info.selectionText.split(" ")[0];
+    // const text = info.selectionText.split(" ")[0];
 });

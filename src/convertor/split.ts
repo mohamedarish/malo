@@ -11,18 +11,17 @@ const split = (word: string): string[] => {
 			}
 		} else {
 			current = word[i].toLowerCase();
-			while (i < word.length - 1 && word[i + 1] == "h") {
+			while (i < word.length - 1 && word[i + 1] == "h" && current.length < 3) {
 				i += 1;
 				current += word[i];
 			}
 		}
-		// console.log(current);
 		parts.push(current);
 	}
 
 	return parts;
 };
 
-console.log(split("kshaamam"));
+// console.log(split("kshaamam")); // this is used to test the splitting functionality.
 
 export default split;
