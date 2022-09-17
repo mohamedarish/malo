@@ -11,7 +11,7 @@ const split = (word: string): string[] => {
 			}
 		} else {
 			current = word[i].toLowerCase();
-			while (i < word.length - 1 && word[i + 1] == "h" ) {
+			while (i < word.length - 1 && word[i + 1] == "h") {
 				i += 1;
 				current += word[i];
 			}
@@ -23,6 +23,6 @@ const split = (word: string): string[] => {
 	return parts;
 };
 
-console.log(split("koythu"));
+console.log(split("kshaamam"));
 
 export default split;
