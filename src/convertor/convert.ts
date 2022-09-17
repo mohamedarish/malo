@@ -2,7 +2,7 @@ import { modifiers, chillaksharam, compounds, consonants, vowels } from "./data"
 import split from "./split";
 
 const en2ml = (word: string): string[] => {
-	const res: string[] = [];
+	let res: string[] = [];
 
 	const parts = split(word);
 
@@ -93,6 +93,43 @@ const en2ml = (word: string): string[] => {
 							}
 						}
 					}
+				} else {
+					// now we know that the compound has been selected. now we need to know what modifier to apply to it
+					// i had been incremented to include the compound joiner, and now we can check for the modifier with i + 1
+
+					// we need to screen out the old elements before continuing to add the mdoifiers.
+					res = res.filter(element => !oldRes.includes(element));
+					// oldres should be set to the now modified res
+					oldRes = [];
+					res.forEach(element => {
+						oldRes.push(element);
+					});
+
+					if (i == parts.length - 1) {
+						// this means that the compound was the last letter and hence we are guaranteed that it ends with .
+						oldRes.forEach(element => {
+							res.push(element + modifiers[0].malayalam[0]);
+						});
+					} else if (parts[i + 1][0].match(/[aeiou]/gi)) {
+						// we now know that it is not the end of the word and that the next part is a modifier
+						i += 1; // this was done as the next part is also taken into account
+
+						for (let j = 0; j < modifiers.length; j += 1) {
+							if (modifiers[j].english == parts[i]) {
+								oldRes.forEach(element => {
+									modifiers[j].malayalam.forEach(aksharam => {
+										res.push(element + aksharam);
+									});
+								});
+							}
+						}
+					} else {
+						// now we know that it ends with a .
+
+						oldRes.forEach(element => {
+							res.push(element + modifiers[0].malayalam[0]);
+						});
+					}
 				}
 			} else if (i == parts.length) {
 				// not a vowel ending and it is not a compound as we have found out before, and now the word can either end with a chillaksharam or a consonatn ending with .
@@ -135,17 +172,82 @@ const en2ml = (word: string): string[] => {
 						if (oldRes.length < 1) {
 							res.push(parts[i]);
 						} else {
-							oldRes.forEach(element => {
+							oldRes.forEach(element => { // oldres can be empty
 								res.push(element + parts[i]);
 							});
+
+							if (oldRes.length < 1) {
+								res.push(parts[i]);
+							}
 						}
 					}
 				}
 			} else {
-				// now it can only be a consonant ending with a modifier in the next part.
-				
+				// now it can only be a consonant ending with a modifier in the next part (it cannot be .)
+
+				// finding the consonant
+				for (let j = 0; j < consonants.length; j += 1) {
+					if (consonants[j].english == parts[i]) {
+						flag = false;
+						oldRes.forEach(element => { // old res can be an empty array
+							consonants[j].malayalam.forEach(aksharam => {
+								res.push(element + aksharam);
+							});
+						});
+
+						if (oldRes.length < 1) {
+							consonants[j].malayalam.forEach(aksharam => {
+								res.push(aksharam);
+							});
+						}
+						break;
+					}
+				}
+
+				if (flag) {
+					// invalid character sequence detected
+					oldRes.forEach(element => {
+						res.push(element + parts[i]);
+					});
+
+					if (oldRes.length < 1) { // oldres can be empty
+						res.push(parts[i]);
+					}
+				} else {
+					// now we know that it was a consonat at the previous part and the next part is a modifier
+
+					// filer out the oldres elements
+					res = res.filter(element => !oldRes.includes(element));
+
+					// we need to make sure oldres is reset
+					oldRes = [];
+					res.forEach(element => {
+						oldRes.push(element);
+					});
+
+					i += 1;
+
+					// finding the modifier
+					if (parts[i] == "a") {
+						// it is a and hence we need to do nothing.
+					} else {
+						for (let j = 0; j < modifiers.length; j += 1) {
+							if (modifiers[j].english == parts[i]) {
+								oldRes.forEach(element => {
+									modifiers[j].malayalam.forEach(aksharam => {
+										res.push(element + aksharam);
+									});
+								});
+							}
+						}
+					}
+
+				}
 			}
 		}
+
+		// filtering out elements which were present in last iteration also.
+		res = res.filter(element => !oldRes.includes(element));
 	}
 
 	return res;
