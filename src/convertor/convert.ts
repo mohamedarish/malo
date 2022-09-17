@@ -37,11 +37,17 @@ const en2ml = (word: string): string[] => {
 					if (compounds[j].english == joined) {
 						i += 1; // this is done as the next part has been used up to compound this letter
 						flag = false;
-						oldRes.forEach(element => { // no compound appears at the start of the word and hence we assume that res.length >= 1
+						oldRes.forEach(element => {
 							compounds[j].malayalam.forEach(aksharam => {
 								res.push(element + aksharam);
 							});
 						});
+
+						if (oldRes.length < 1) { // if oldres was empty
+							compounds[j].malayalam.forEach(aksharam => {
+								res.push(aksharam);
+							});
+						}
 						break;
 					}
 				}
@@ -61,6 +67,7 @@ const en2ml = (word: string): string[] => {
 							break;
 						}
 					}
+
 
 					if (flag) {
 						// now it is not a chillaksharam either, which makes us conclude that it is a consonant that ends with .
@@ -82,6 +89,7 @@ const en2ml = (word: string): string[] => {
 							}
 						}
 
+
 						if (flag) {
 							// invalid character sequence detected and hence we keep it as is.
 							if (oldRes.length < 1) {
@@ -91,47 +99,65 @@ const en2ml = (word: string): string[] => {
 									res.push(element + parts[i]);
 								});
 							}
+
 						}
 					}
 				} else {
 					// now we know that the compound has been selected. now we need to know what modifier to apply to it
 					// i had been incremented to include the compound joiner, and now we can check for the modifier with i + 1
 
-					// we need to screen out the old elements before continuing to add the mdoifiers.
-					res = res.filter(element => !oldRes.includes(element));
-					// oldres should be set to the now modified res
-					oldRes = [];
-					res.forEach(element => {
-						oldRes.push(element);
-					});
-
 					if (i == parts.length - 1) {
+						// we need to screen out the old elements before continuing to add the mdoifiers.
+						res = res.filter(element => !oldRes.includes(element));
+						// oldres should be set to the now modified res
+						oldRes = [];
+						res.forEach(element => {
+							oldRes.push(element);
+						});
+
 						// this means that the compound was the last letter and hence we are guaranteed that it ends with .
 						oldRes.forEach(element => {
 							res.push(element + modifiers[0].malayalam[0]);
 						});
+
 					} else if (parts[i + 1][0].match(/[aeiou]/gi)) {
 						// we now know that it is not the end of the word and that the next part is a modifier
 						i += 1; // this was done as the next part is also taken into account
 
-						for (let j = 0; j < modifiers.length; j += 1) {
-							if (modifiers[j].english == parts[i]) {
-								oldRes.forEach(element => {
-									modifiers[j].malayalam.forEach(aksharam => {
-										res.push(element + aksharam);
+						if (parts[i] == "a") {
+							// do nothing as this is already okay
+						} else {
+							// we need to screen out the old elements before continuing to add the mdoifiers.
+							res = res.filter(element => !oldRes.includes(element));
+							// oldres should be set to the now modified res
+							oldRes = [];
+							res.forEach(element => {
+								oldRes.push(element);
+							});
+
+
+							for (let j = 0; j < modifiers.length; j += 1) {
+								if (modifiers[j].english == parts[i]) {
+									oldRes.forEach(element => {
+										modifiers[j].malayalam.forEach(aksharam => {
+											res.push(element + aksharam);
+										});
 									});
-								});
+									break;
+								}
 							}
 						}
+
 					} else {
 						// now we know that it ends with a .
 
 						oldRes.forEach(element => {
 							res.push(element + modifiers[0].malayalam[0]);
 						});
+
 					}
 				}
-			} else if (i == parts.length) {
+			} else if (i == parts.length - 1) {
 				// not a vowel ending and it is not a compound as we have found out before, and now the word can either end with a chillaksharam or a consonatn ending with .
 
 				// checking if it is a chillaksharam
@@ -139,13 +165,14 @@ const en2ml = (word: string): string[] => {
 					if (chillaksharam[j].english == parts[i]) {
 						flag = false;
 						oldRes.forEach(element => {// no chillaksharam can occur at the start of the word and hence we assume that res.length >= 1
-							compounds[j].malayalam.forEach(aksharam => {
+							chillaksharam[j].malayalam.forEach(aksharam => {
 								res.push(element + aksharam);
 							});
 						});
 						break;
 					}
 				}
+
 
 				if (flag) {
 					// now it is not a chillaksharam either, which makes us conclude that it is a consonant that ends with .
@@ -180,6 +207,7 @@ const en2ml = (word: string): string[] => {
 								res.push(parts[i]);
 							}
 						}
+
 					}
 				}
 			} else {
@@ -213,17 +241,9 @@ const en2ml = (word: string): string[] => {
 					if (oldRes.length < 1) { // oldres can be empty
 						res.push(parts[i]);
 					}
+
 				} else {
 					// now we know that it was a consonat at the previous part and the next part is a modifier
-
-					// filer out the oldres elements
-					res = res.filter(element => !oldRes.includes(element));
-
-					// we need to make sure oldres is reset
-					oldRes = [];
-					res.forEach(element => {
-						oldRes.push(element);
-					});
 
 					i += 1;
 
@@ -231,6 +251,15 @@ const en2ml = (word: string): string[] => {
 					if (parts[i] == "a") {
 						// it is a and hence we need to do nothing.
 					} else {
+						// filer out the oldres elements
+						res = res.filter(element => !oldRes.includes(element));
+
+						// we need to make sure oldres is reset
+						oldRes = [];
+						res.forEach(element => {
+							oldRes.push(element);
+						});
+
 						for (let j = 0; j < modifiers.length; j += 1) {
 							if (modifiers[j].english == parts[i]) {
 								oldRes.forEach(element => {
@@ -253,7 +282,7 @@ const en2ml = (word: string): string[] => {
 	return res;
 };
 
-en2ml("kshaamam").forEach((word) => {
+en2ml("omana").forEach((word) => {
 	console.log(word);
 });
 
