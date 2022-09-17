@@ -1,31 +1,14 @@
-import { vowels, consonants/*, compounds, chillaksharam, modifiers*/ } from "./data";
+// import { vowels, consonants, compounds, chillaksharam/*, modifiers*/ } from "./data";
+
+import split from "./split";
+
 
 const en2ml = (word: string): string[] => {
 	const res: string[] = [];
 
-	for (let i = 0; i < word.length; i += 1) {
-		if (i == 0) {
-			let flag = false;
-			vowels.forEach(letter => {
-				if (letter.english == word[i]) {
-					letter.malayalam.forEach(aksharam => {
-						res.push(aksharam);
-					});
-					flag = true;
-				}
-			});
+	const parts = split(word);
 
-			if (!flag) {
-				consonants.forEach(letter => {
-					if (letter.english == word[i]) {
-						letter.malayalam.forEach(aksharam => {
-							res.push(aksharam);
-						});
-					}
-				});
-			}
-		}
-	}
+
 
 	return res;
 };
