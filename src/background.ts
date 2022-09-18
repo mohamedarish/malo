@@ -1,3 +1,5 @@
+import en2ml from "./convertor/convert";
+
 console.log("Extension Loaded");
 
 browser.menus.create({
@@ -13,5 +15,10 @@ browser.menus.onClicked.addListener(async (info) => {
 
     if (!info.selectionText) return;
 
-    // const text = info.selectionText.split(" ")[0];
+    const text = info.selectionText.split(" ")[0];
+
+    console.log(text);
+    en2ml(text).forEach(word => {
+        console.log(word);
+    });
 });

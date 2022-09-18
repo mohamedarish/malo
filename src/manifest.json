@@ -9,7 +9,7 @@
     },
 
     "background": {
-        "scripts": ["background.js"]
+        "scripts": ["background.ts"]
     },
     "permissions": ["menus"]
 }

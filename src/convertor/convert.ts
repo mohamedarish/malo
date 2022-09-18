@@ -1,4 +1,4 @@
-import { modifiers, chillaksharam, compounds, consonants, vowels } from "./data";
+import { modifiers, chillaksharam, compounds, consonants, vowels } from "./data/index";
 import split from "./split";
 
 const en2ml = (word: string): string[] => {
