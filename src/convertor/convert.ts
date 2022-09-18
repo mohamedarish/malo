@@ -29,7 +29,13 @@ const en2ml = (word: string): string[] => {
                     vowels[j].malayalam.forEach((aksharam) => {
                         res.push(aksharam);
                     });
+                    flag = false;
+                    break;
                 }
+            }
+
+            if (flag) { // invalid vowel sequence
+                res.push(parts[i]);
             }
         } else {
             // not a vowel, so consonant, chillaksharam or compound.
@@ -87,8 +93,8 @@ const en2ml = (word: string): string[] => {
                                         (aksharam) => {
                                             res.push(
                                                 element +
-                                                    aksharam +
-                                                    modifiers[0].malayalam[0]
+                                                aksharam +
+                                                modifiers[0].malayalam[0]
                                             ); // we know that it ends with .
                                         }
                                     );
@@ -98,7 +104,7 @@ const en2ml = (word: string): string[] => {
                                         (aksharam) => {
                                             res.push(
                                                 aksharam +
-                                                    modifiers[0].malayalam[0]
+                                                modifiers[0].malayalam[0]
                                             ); // we know that it ends with .
                                         }
                                     );
@@ -163,8 +169,15 @@ const en2ml = (word: string): string[] => {
                                             }
                                         );
                                     });
+                                    flag = false;
                                     break;
                                 }
+                            }
+
+                            if (flag) { // invalid vowel sequence
+                                oldRes.forEach(element => {
+                                    res.push(element + parts[i]);
+                                });
                             }
                         }
                     } else {
@@ -202,8 +215,8 @@ const en2ml = (word: string): string[] => {
                                 consonants[j].malayalam.forEach((aksharam) => {
                                     res.push(
                                         element +
-                                            aksharam +
-                                            modifiers[0].malayalam[0]
+                                        aksharam +
+                                        modifiers[0].malayalam[0]
                                     ); // we know that it ends with .
                                 });
                             });
@@ -296,12 +309,22 @@ const en2ml = (word: string): string[] => {
                                         }
                                     );
                                 });
+                                flag = false;
+                                break;
                             }
+                        }
+
+                        if (flag) { // invalid sequence of vowels
+                            oldRes.forEach(element => {
+                                res.push(element + parts[i]);
+                            });
                         }
                     }
                 }
             }
         }
+
+        // console.log(res);
 
         // filtering out elements which were present in last iteration also.
         res = res.filter((element) => !oldRes.includes(element));
@@ -310,8 +333,8 @@ const en2ml = (word: string): string[] => {
     return res;
 };
 
-// en2ml("omana").forEach((word) => {
-// 	console.log(word);
+// en2ml("reading").forEach((word) => {
+//     console.log(word);
 // });
 
 export default en2ml;

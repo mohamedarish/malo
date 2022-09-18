@@ -18,7 +18,9 @@ browser.menus.onClicked.addListener(async (info) => {
     const text = info.selectionText.split(" ")[0];
 
     console.log(text);
-    en2ml(text).forEach((word) => {
-        console.log(word);
-    });
+
+    const words = en2ml(text);
+
+    console.log(words);
+
 });

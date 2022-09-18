@@ -26,6 +26,6 @@ const split = (word: string): string[] => {
     return parts;
 };
 
-// console.log(split("kshaamam")); // this is used to test the splitting functionality.
+// console.log(split("reading")); // this is used to test the splitting functionality.
 
 export default split;
