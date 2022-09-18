@@ -11,7 +11,7 @@ browser.menus.create({
 browser.menus.onClicked.addListener(async (info) => {
     if (!info) return;
 
-    if (info.menuItemId != "muted-tab") return;
+    if (info.menuItemId != "define-malo") return;
 
     if (!info.selectionText) return;
 
