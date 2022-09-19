@@ -4,8 +4,8 @@ import {
     compounds,
     consonants,
     vowels,
-} from "./data/index";
-import split from "./split";
+} from "./data/index.js";
+import split from "./split.js";
 
 const en2ml = (word: string): string[] => {
     let res: string[] = [];

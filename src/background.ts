@@ -1,4 +1,5 @@
-import en2ml from "./convertor/convert";
+import en2ml from "./convertor/convert.js";
+import getMeanings from "./dictionary/fetchData.js";
 
 console.log("Extension Loaded");
 
@@ -23,4 +24,7 @@ browser.menus.onClicked.addListener(async (info) => {
 
     console.log(words);
 
+    const meanings = await getMeanings(words);
+
+    console.log(meanings);
 });
