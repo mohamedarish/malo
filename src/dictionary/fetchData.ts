@@ -10,13 +10,13 @@ const getMeanings = (words: string[]): meangings[] => {
 			.then(async response => {
 				let dictionary = await response.json() as dictionary[];
 
-				console.log(dictionary);
+				// console.log(dictionary);
 
 				dictionary = dictionary.filter(element => {
 					element.entry.replace(/[0-9]/g, "") == word;
 				});
 
-				console.log(dictionary);
+				// console.log(dictionary);
 
 				const definition: string[] = [];
 
@@ -36,8 +36,17 @@ const getMeanings = (words: string[]): meangings[] => {
 	return res;
 };
 
-// getMeanings(en2ml("kshethram")).forEach(meaning => {
-// 	console.log(meaning);
-// });
+
+console.log(getMeanings(["കാക്കച്ചുവട്"]));
+
+getMeanings(["കാക്കച്ചുവട്"]).forEach(element => {
+	console.log("starting");
+	console.log(element.word);
+
+	element.meaning.forEach(meaning => {
+		console.log(meaning);
+	});
+	console.log();
+});
 
 export default getMeanings;

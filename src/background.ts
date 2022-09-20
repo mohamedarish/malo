@@ -27,4 +27,20 @@ browser.menus.onClicked.addListener(async (info) => {
     const meanings = await getMeanings(words);
 
     console.log(meanings);
+
+    /* const selection =
+
+    console.log(selection?.rangeCount);
+
+    const range = selection?.getRangeAt(0);
+
+    const rect = range?.getBoundingClientRect();
+
+    const div = document.createElement("div");
+    div.style.border = "2px solid black";
+    div.style.position = "fixed";
+    div.style.top = rect?.top + "px";
+    div.style.left = rect?.left + "px";
+    div.innerHTML = meanings + "";
+    document.body.append(div);*/
 });
