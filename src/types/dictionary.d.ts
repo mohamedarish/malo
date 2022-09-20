@@ -7,7 +7,7 @@ interface dictionary {
 	id: number,
 	head: string,
 	entry: string,
-	orgin: string,
+	origin: string,
 	info: string,
 	defs: defs[],
 }

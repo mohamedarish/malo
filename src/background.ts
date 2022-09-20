@@ -1,13 +1,16 @@
 import en2ml from "./convertor/convert.js";
 import getMeanings from "./dictionary/fetchData.js";
+import dictionary from "./types/dictionary.js";
 
 console.log("Extension Loaded");
+
 
 browser.menus.create({
     id: "define-malo",
     title: "Find definition using malo",
     contexts: ["selection"],
 });
+
 
 browser.menus.onClicked.addListener(async (info) => {
     if (!info) return;
@@ -23,8 +26,11 @@ browser.menus.onClicked.addListener(async (info) => {
     const words = en2ml(text);
 
     console.log(words);
+    console.log(words[0][0]);
 
-    const meanings = await getMeanings(words);
+    const datuk = await (await fetch("https://raw.githubusercontent.com/mohamedarish/ml2ml-dictionary/main/dictionary.json")).json() as dictionary[];
+
+    const meanings = getMeanings(words, datuk);
 
     console.log(meanings);
 
