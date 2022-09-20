@@ -324,17 +324,11 @@ const en2ml = (word: string): string[] => {
             }
         }
 
-        // console.log(res);
-
         // filtering out elements which were present in last iteration also.
         res = res.filter((element) => !oldRes.includes(element));
     }
 
     return res;
 };
-
-// en2ml("reading").forEach((word) => {
-//     console.log(word);
-// });
 
 export default en2ml;

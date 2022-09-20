@@ -8,8 +8,13 @@
         "48": "icons/42.png"
     },
 
+    "content_scripts": {
+        "matches": ["*://*.*.*/*", "*://*.*/*"],
+        "js": [".dist/scripts/viewPopup.js"]
+    },
+
     "background": {
         "page": "background.html"
     },
-    "permissions": ["menus"]
+    "permissions": ["menus", "activeTab"]
 }

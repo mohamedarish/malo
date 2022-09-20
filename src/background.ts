@@ -26,7 +26,6 @@ browser.menus.onClicked.addListener(async (info) => {
     const words = en2ml(text);
 
     console.log(words);
-    console.log(words[0][0]);
 
     const datuk = await (await fetch("https://raw.githubusercontent.com/mohamedarish/ml2ml-dictionary/main/dictionary.json")).json() as dictionary[];
 
@@ -34,19 +33,7 @@ browser.menus.onClicked.addListener(async (info) => {
 
     console.log(meanings);
 
-    /* const selection =
-
-    console.log(selection?.rangeCount);
-
-    const range = selection?.getRangeAt(0);
-
-    const rect = range?.getBoundingClientRect();
-
-    const div = document.createElement("div");
-    div.style.border = "2px solid black";
-    div.style.position = "fixed";
-    div.style.top = rect?.top + "px";
-    div.style.left = rect?.left + "px";
-    div.innerHTML = meanings + "";
-    document.body.append(div);*/
+    browser.tabs.executeScript({
+        file: "./scripts/viewPopup.js"
+    });
 });
