@@ -18,5 +18,8 @@
         "page": "background.html"
     },
     "permissions": ["<all_urls>", "menus", "activeTab"],
-    "web_accessible_resources": ["./dist/scripts/displayMeaning.js"]
+    "web_accessible_resources": [
+        "./dist/dictionary/fetchData.js",
+        "./dist/convertor/convert.js"
+    ]
 }
