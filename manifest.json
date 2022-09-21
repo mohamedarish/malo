@@ -7,14 +7,16 @@
     "icons": {
         "48": "icons/42.png"
     },
-
-    "content_scripts": {
-        "matches": ["*://*.*.*/*", "*://*.*/*"],
-        "js": [".dist/scripts/viewPopup.js"]
-    },
+    "content_scripts": [
+        {
+            "matches": ["<all_urls>"],
+            "js": ["./dist/content.js"]
+        }
+    ],
 
     "background": {
         "page": "background.html"
     },
-    "permissions": ["menus", "activeTab"]
+    "permissions": ["<all_urls>", "menus", "activeTab"],
+    "web_accessible_resources": ["./dist/scripts/displayMeaning.js"]
 }

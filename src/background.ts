@@ -33,7 +33,5 @@ browser.menus.onClicked.addListener(async (info) => {
 
     console.log(meanings);
 
-    browser.tabs.executeScript({
-        file: "./scripts/viewPopup.js"
-    });
+
 });
