@@ -1,6 +1,6 @@
-import en2ml from "./convertor/convert.js";
-import getMeanings from "./dictionary/fetchData.js";
-import dictionary from "./types/dictionary.js";
+import en2ml from "../convertor/convert.js";
+import getMeanings from "../dictionary/fetchData.js";
+import dictionary from "../types/dictionary.js";
 
 console.log("Extension Loaded");
 
@@ -35,5 +35,5 @@ browser.menus.onClicked.addListener(async (info) => {
 
     // trying to botch it by storing it in a jsin file and allowing user to clear json file because I'm tired of trying to make it come up like grammarly and would like to finish this extension soon because I've found more extension ideas while working on this.
 
-
+    
 });
