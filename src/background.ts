@@ -33,5 +33,7 @@ browser.menus.onClicked.addListener(async (info) => {
 
     console.log(meanings);
 
+    // trying to botch it by storing it in a jsin file and allowing user to clear json file because I'm tired of trying to make it come up like grammarly and would like to finish this extension soon because I've found more extension ideas while working on this.
+
 
 });
