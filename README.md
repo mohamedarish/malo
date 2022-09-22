@@ -12,3 +12,4 @@ firefox extension that gets the meaning for manglish words
 - 19/9 does async/await even work? 🤔💭
 - 20/9 Now no need to add .js to all imports after compiling but it does not get the dictionary properly yet.
 - 20/9 Update 2: Finally works, now just need to add the gui components.
+- 21/9 Just botching the thing because I've not found any source code showing how the popup like thing comes up that works, could check grammarly's source code but not interested to do it anymore as I'm tired of looking for how it's done.
