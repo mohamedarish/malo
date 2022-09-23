@@ -34,7 +34,8 @@ const en2ml = (word: string): string[] => {
                 }
             }
 
-            if (flag) { // invalid vowel sequence
+            if (flag) {
+                // invalid vowel sequence
                 res.push(parts[i]);
             }
         } else {
@@ -93,8 +94,8 @@ const en2ml = (word: string): string[] => {
                                         (aksharam) => {
                                             res.push(
                                                 element +
-                                                aksharam +
-                                                modifiers[0].malayalam[0]
+                                                    aksharam +
+                                                    modifiers[0].malayalam[0]
                                             ); // we know that it ends with .
                                         }
                                     );
@@ -104,7 +105,7 @@ const en2ml = (word: string): string[] => {
                                         (aksharam) => {
                                             res.push(
                                                 aksharam +
-                                                modifiers[0].malayalam[0]
+                                                    modifiers[0].malayalam[0]
                                             ); // we know that it ends with .
                                         }
                                     );
@@ -174,8 +175,9 @@ const en2ml = (word: string): string[] => {
                                 }
                             }
 
-                            if (flag) { // invalid vowel sequence
-                                oldRes.forEach(element => {
+                            if (flag) {
+                                // invalid vowel sequence
+                                oldRes.forEach((element) => {
                                     res.push(element + parts[i]);
                                 });
                             }
@@ -215,8 +217,8 @@ const en2ml = (word: string): string[] => {
                                 consonants[j].malayalam.forEach((aksharam) => {
                                     res.push(
                                         element +
-                                        aksharam +
-                                        modifiers[0].malayalam[0]
+                                            aksharam +
+                                            modifiers[0].malayalam[0]
                                     ); // we know that it ends with .
                                 });
                             });
@@ -314,8 +316,9 @@ const en2ml = (word: string): string[] => {
                             }
                         }
 
-                        if (flag) { // invalid sequence of vowels
-                            oldRes.forEach(element => {
+                        if (flag) {
+                            // invalid sequence of vowels
+                            oldRes.forEach((element) => {
                                 res.push(element + parts[i]);
                             });
                         }

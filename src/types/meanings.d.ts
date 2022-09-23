@@ -1,6 +1,6 @@
 interface meangings {
-	word: string,
-	meaning: string[]
+    word: string;
+    meaning: string[];
 }
 
 export default meangings;

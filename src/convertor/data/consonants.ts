@@ -111,7 +111,7 @@ export const consonants: letters[] = [
     },
     {
         english: "z",
-        malayalam: ["സ"]
+        malayalam: ["സ"],
     },
     {
         english: "h",

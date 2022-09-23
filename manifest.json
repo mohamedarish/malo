@@ -7,9 +7,14 @@
     "icons": {
         "48": "icons/42.png"
     },
-
+    "content_scripts": [
+        {
+            "matches": ["<all_urls>"],
+            "js": ["./dist/content_scripts/index.js"]
+        }
+    ],
     "background": {
-        "page": "background.html"
+        "scripts": ["./dist/background_scripts/index.js"]
     },
-    "permissions": ["<all_urls>", "menus", "activeTab"]
+    "permissions": ["menus", "activeTab", "tabs"]
 }
