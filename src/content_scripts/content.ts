@@ -1,3 +1,5 @@
+import Message from "../types/customMessage";
+
 console.log("content script loaded");
 
 window.addEventListener("mouseup", () => {
@@ -6,8 +8,9 @@ window.addEventListener("mouseup", () => {
     if (selection && selection.toString()) {
         console.log(selection.toString());
 
-        const message = {
-            word: selection.toString(),
+        const message: Message = {
+            domElement: selection.getRangeAt(0).getBoundingClientRect(),
+            word: selection.toString()
         };
 
         browser.runtime.sendMessage(message);
