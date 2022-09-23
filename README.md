@@ -13,3 +13,4 @@ firefox extension that gets the meaning for manglish words
 - 20/9 Now no need to add .js to all imports after compiling but it does not get the dictionary properly yet.
 - 20/9 Update 2: Finally works, now just need to add the gui components.
 - 21/9 Just botching the thing because I've not found any source code showing how the popup like thing comes up that works, could check grammarly's source code but not interested to do it anymore as I'm tired of looking for how it's done.
+- 23/9 22/9 Update: Yesterday, I read some more of the docs from the web extension guide and landed upon this example extension of using webpack to bundle the extension javascript into just one file and now have planned to do that instead of what I was doing just now.
