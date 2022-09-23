@@ -20,4 +20,22 @@ browser.runtime.onMessage.addListener(async (message: Message, sender, sendRespo
     const meanings = getMeanings(words, datuk);
 
     console.log(meanings);
+
+    let toInsetList = "<ol>";
+
+    meanings.forEach(meaning => {
+        if (meaning.meaning.length > 0) {
+            toInsetList += `<li>${meaning.word}</li><ul>`;
+
+            meaning.meaning.forEach(definition => {
+                toInsetList += `<li>${definition}</li>`;
+            });
+
+            toInsetList += "</ul>";
+        }
+    });
+
+    toInsetList += "</ol>";
+
+    console.log(toInsetList);
 });

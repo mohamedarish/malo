@@ -16,3 +16,4 @@ firefox extension that gets the meaning for manglish words
 - 23/9 22/9 Update: Yesterday, I read some more of the docs from the web extension guide and landed upon this example extension of using webpack to bundle the extension javascript into just one file and now have planned to do that instead of what I was doing just now.
 - 23/9 Real Update: Started work on the modules to be bundled.
 - 23/9 Update 2: Making real progress now.
+- 23/9 Update 3: Making real good progress, Real Fast⚡️⚡️⚡️ඞ.

@@ -5,6 +5,8 @@ console.log("content script loaded");
 window.addEventListener("mouseup", () => {
     const selection = window.getSelection();
 
+    browser.runtime.sendMessage({ word: "emptyOut", domElement: DOMRect });
+
     if (selection && selection.toString()) {
         console.log(selection.toString());
 
