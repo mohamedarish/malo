@@ -26,6 +26,10 @@ browser.runtime.onMessage.addListener(
         const meanings = getMeanings(words, datuk);
 
         console.log(meanings);
+
+        browser.storage.local.set({ "meanings": meanings });
+
+        console.log(meanings.toString());
     }
 );
 
@@ -53,4 +57,6 @@ browser.menus.onClicked.addListener(async info => {
     const meanings = getMeanings(words, datuk);
 
     console.log(meanings);
+
+    browser.storage.local.set({ "meanings": meanings });
 });

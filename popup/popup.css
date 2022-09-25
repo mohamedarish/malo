@@ -1,0 +1,11 @@
+* {
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    box-sizing: border-box;
+}
+
+body {
+    border: 5px solid blue;
+}
