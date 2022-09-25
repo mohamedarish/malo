@@ -9,7 +9,6 @@ window.addEventListener("mouseup", () => {
         console.log(selection.toString());
 
         const message: contentMessage = {
-            domElement: selection.getRangeAt(0).getBoundingClientRect(),
             word: selection.toString(),
             sender: "content_script",
         };

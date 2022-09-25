@@ -7,7 +7,6 @@ console.log("Background Script Loaded");
 browser.runtime.onMessage.addListener(
     async (message: contentMessage, sender, sendResponse) => {
         const selection = message.word;
-        const DOMRect = message.domElement;
 
         if (message.sender != "content_script") return false;
 
@@ -27,7 +26,7 @@ browser.runtime.onMessage.addListener(
 
         console.log(meanings);
 
-        browser.storage.local.set({ "meanings": meanings });
+        browser.storage.local.set({ meanings: meanings });
 
         console.log(meanings.toString());
     }
@@ -36,10 +35,10 @@ browser.runtime.onMessage.addListener(
 browser.menus.create({
     id: "find-malo",
     title: "find definition using malo",
-    contexts: ["selection"]
+    contexts: ["selection"],
 });
 
-browser.menus.onClicked.addListener(async info => {
+browser.menus.onClicked.addListener(async (info) => {
     if (!info) return;
 
     if (info.menuItemId != "find-malo") return;
@@ -52,11 +51,15 @@ browser.menus.onClicked.addListener(async info => {
 
     console.log(words);
 
-    const datuk = await (await fetch("https://raw.githubusercontent.com/mohamedarish/ml2ml-dictionary/main/dictionary.json")).json() as dictionary[];
+    const datuk = (await (
+        await fetch(
+            "https://raw.githubusercontent.com/mohamedarish/ml2ml-dictionary/main/dictionary.json"
+        )
+    ).json()) as dictionary[];
 
     const meanings = getMeanings(words, datuk);
 
     console.log(meanings);
 
-    browser.storage.local.set({ "meanings": meanings });
+    browser.storage.local.set({ meanings: meanings });
 });
