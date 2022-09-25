@@ -7,6 +7,11 @@
     "icons": {
         "48": "icons/42.png"
     },
+    "browser_action": {
+        "default_icon": "./icons/42.png",
+        "default_title": "Malo",
+        "default_popup": "./popup/popup.html"
+    },
     "content_scripts": [
         {
             "matches": ["<all_urls>"],
