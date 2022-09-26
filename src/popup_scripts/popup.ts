@@ -13,12 +13,15 @@ document.addEventListener("DOMContentLoaded", async () => {
     for (let i = 0; i < meanings.meanings.length; i++) {
         for (let j = 0; j < meanings.meanings[i].meaning.length; j++) {
             var el = document.createElement("li"),
+                btn = document.createElement("button"),
                 content = document.createTextNode(
                     meanings.meanings[i].meaning[j]
                 ),
                 myUl = document.getElementById("list-items");
 
+            btn.innerHTML += '<i class="fa-duotone fa-copy"></i>';
             el.appendChild(content);
+            el.appendChild(btn);
             el.id = "list-item";
             if (myUl != null) {
                 myUl.appendChild(el);
