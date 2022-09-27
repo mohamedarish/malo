@@ -22,6 +22,10 @@ document.addEventListener("DOMContentLoaded", async () => {
             // btn.innerHTML += "<div>Ayyayyoo</div>";
             btn.innerHTML += '<img src="../icons/copy-light.png">';
             btn.id = "item-button";
+            btn.addEventListener("click", function copyButtonFn() {
+                navigator.clipboard.writeText(meanings.meanings[i].meaning[j]);
+                alert("Copied");
+            });
             el.appendChild(content);
             el.appendChild(btn);
             el.id = "list-item";
