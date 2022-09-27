@@ -24,7 +24,12 @@ document.addEventListener("DOMContentLoaded", async () => {
             btn.id = "item-button";
             btn.addEventListener("click", function copyButtonFn() {
                 navigator.clipboard.writeText(meanings.meanings[i].meaning[j]);
-                alert("Copied");
+                document.getElementById("alert")!.classList.add("visible");
+                setTimeout(() => {
+                    document
+                        .getElementById("alert")!
+                        .classList.remove("visible");
+                }, 1000);
             });
             el.appendChild(content);
             el.appendChild(btn);
