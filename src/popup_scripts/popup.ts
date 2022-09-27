@@ -19,7 +19,9 @@ document.addEventListener("DOMContentLoaded", async () => {
                 ),
                 myUl = document.getElementById("list-items");
 
-            btn.innerHTML += '<i class="fa-duotone fa-copy"></i>';
+            // btn.innerHTML += "<div>Ayyayyoo</div>";
+            btn.innerHTML += '<img src="../icons/copy-light.png">';
+            btn.id = "item-button";
             el.appendChild(content);
             el.appendChild(btn);
             el.id = "list-item";

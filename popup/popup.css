@@ -21,10 +21,13 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    position: fixed;
+    top: 0;
+    width: 100%;
 }
 #the-word {
     margin: 0 10px;
-    padding: 16px 10px 4px 10px;
+    padding: 48px 10px 4px 10px;
     border-bottom: 1px solid #000;
     display: flex;
     align-items: center;
@@ -33,9 +36,21 @@ body {
 #list-items {
     list-style-type: none;
     margin: 0 0 0 20px;
-    padding: 16px 10px 4px 10px;
+    padding: 8px 10px 4px 10px;
     color: #eee;
 }
 #list-item {
     padding: 6px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+#item-button {
+    height: 24px;
+    background-color: transparent;
+    cursor: pointer;
+    border: 0 none transparent;
+}
+#item-button img {
+    height: 100%;
 }
