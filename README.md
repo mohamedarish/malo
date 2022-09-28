@@ -19,3 +19,4 @@ firefox extension that gets the meaning for manglish words
 - 23/9 Update 3: Making real good progress, Real Fast⚡️⚡️⚡️ඞ.
 - 24/9 Trying to do ui but can't do much today.
 - 25/9 Still no idea on how I would show the meaning using a ui. Any help is appreciated.
+- 28/9 Went live yesterday and it is still awaiting approval. When the addon gets approved, I will move all the Updates to another file called devLogs.md and shall make this readme more technical.
