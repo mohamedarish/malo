@@ -4,6 +4,13 @@ import contentMessage from "../types/contentMessage";
 import dictionary from "../types/dictionary";
 
 console.log("Background Script Loaded");
+
+const datuk = (await (
+    await fetch(
+        "https://raw.githubusercontent.com/mohamedarish/ml2ml-dictionary/main/dictionary.json"
+    )
+).json()) as dictionary[];
+
 browser.runtime.onMessage.addListener(
     async (message: contentMessage, sender, sendResponse) => {
         const selection = message.word;
@@ -15,12 +22,6 @@ browser.runtime.onMessage.addListener(
         const words = en2ml(selection);
 
         console.log(words);
-
-        const datuk = (await (
-            await fetch(
-                "https://raw.githubusercontent.com/mohamedarish/ml2ml-dictionary/main/dictionary.json"
-            )
-        ).json()) as dictionary[];
 
         const meanings = getMeanings(words, datuk);
 
