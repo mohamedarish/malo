@@ -3,23 +3,15 @@ import getMeanings from "../dictionary/fetchData";
 import contentMessage from "../types/contentMessage";
 import dictionary from "../types/dictionary";
 
-console.log("Background Script Loaded");
-
 browser.runtime.onMessage.addListener(
-    async (message: contentMessage, sender, sendResponse) => {
+    async (message: contentMessage) => {
         const selection = message.word;
 
-        if (message.sender != "content_script") return false;
-
-        console.log(selection, sender, sendResponse, DOMRect);
+        if (message.sender != "content_script") return;
 
         const words = en2ml(selection);
 
-        console.log(words);
-
         let datuk = (await browser.storage.local.get("datuk")).datuk;
-
-        console.log(datuk);
 
         if (!datuk) {
             console.log("Fetched from github");
@@ -30,21 +22,15 @@ browser.runtime.onMessage.addListener(
             ).json()) as dictionary[];
 
             browser.storage.local.set({ "datuk": datuk });
-        } else {
-            console.log("Got from storage");
         }
 
         let meanings = getMeanings(words, datuk);
 
-        console.log(meanings);
-
         meanings = meanings.filter(element => element.meaning.length > 0);
 
-        if (meanings.length < 1) return false;
+        if (meanings.length < 1) return;
 
         browser.storage.local.set({ meanings: meanings });
-
-        console.log(meanings.toString());
     }
 );
 
@@ -64,25 +50,25 @@ browser.menus.onClicked.addListener(async (info) => {
     if (!info.selectionText) {
         text = (await browser.storage.local.get("message")).message.word;
 
-        if (text.length < 1) return false;
+        if (text.length < 1) return;
     } else {
-
         text = info.selectionText;
-
     }
     const words = en2ml(text);
 
-    console.log(words);
+    let datuk = (await browser.storage.local.get("datuk")).datuk;
 
-    const datuk = (await (
-        await fetch(
-            "https://raw.githubusercontent.com/mohamedarish/ml2ml-dictionary/main/dictionary.json"
-        )
-    ).json()) as dictionary[];
+    if (!datuk) {
+        datuk = (await (
+            await fetch(
+                "https://raw.githubusercontent.com/mohamedarish/ml2ml-dictionary/main/dictionary.json"
+            )
+        ).json()) as dictionary[];
+
+        browser.storage.local.set({ "datuk": datuk });
+    }
 
     let meanings = getMeanings(words, datuk);
-
-    console.log(meanings);
 
     meanings = meanings.filter(element => element.meaning.length > 0);
 

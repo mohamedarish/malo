@@ -1,28 +1,23 @@
 import contentMessage from "../types/contentMessage";
 
-console.log("content script loaded");
-
 window.addEventListener("mouseup", async () => {
     const selection = window.getSelection();
 
-    if (selection && selection.toString()) {
-        console.log(selection.toString());
+    if (!selection) return;
 
-        const message: contentMessage = {
-            word: selection.toString(),
-            sender: "content_script",
-        };
+    if (!selection.toString()) return;
 
-        const prevMessage = (await browser.storage.local.get("message")).message;
+    const message: contentMessage = {
+        word: selection.toString(),
+        sender: "content_script",
+    };
 
-        console.log(prevMessage);
-        console.log(message);
-        if (prevMessage) console.log(prevMessage.word == message.word);
+    const prevMessage = (await browser.storage.local.get("message")).message;
 
-        if (prevMessage && prevMessage.word == message.word) return false;
+    if (prevMessage && prevMessage.word == message.word) return;
 
-        browser.runtime.sendMessage(message);
+    browser.runtime.sendMessage(message);
 
-        browser.storage.local.set({ "message": message });
-    }
+    browser.storage.local.set({ "message": message });
+
 });

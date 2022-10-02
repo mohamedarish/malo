@@ -15,8 +15,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     the_word.innerText = "Word: " + meanings.meanings[0].word;
 
-    console.log("content_script: ", meanings.meanings);
-
     if (meanings.meanings[0].meaning.length === 0) {
         const el = document.createElement("li"),
             myUl = document.getElementById("list-items");
