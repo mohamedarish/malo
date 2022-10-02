@@ -5,12 +5,6 @@ import dictionary from "../types/dictionary";
 
 console.log("Background Script Loaded");
 
-const datuk = (await (
-    await fetch(
-        "https://raw.githubusercontent.com/mohamedarish/ml2ml-dictionary/main/dictionary.json"
-    )
-).json()) as dictionary[];
-
 browser.runtime.onMessage.addListener(
     async (message: contentMessage, sender, sendResponse) => {
         const selection = message.word;
@@ -22,6 +16,23 @@ browser.runtime.onMessage.addListener(
         const words = en2ml(selection);
 
         console.log(words);
+
+        let datuk = (await browser.storage.local.get("datuk")).datuk;
+
+        console.log(datuk);
+
+        if (!datuk) {
+            console.log("Fetched from github");
+            datuk = (await (
+                await fetch(
+                    "https://raw.githubusercontent.com/mohamedarish/ml2ml-dictionary/main/dictionary.json"
+                )
+            ).json()) as dictionary[];
+
+            browser.storage.local.set({ "datuk": datuk });
+        } else {
+            console.log("Got from storage");
+        }
 
         const meanings = getMeanings(words, datuk);
 
