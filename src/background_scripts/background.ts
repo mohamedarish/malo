@@ -34,9 +34,13 @@ browser.runtime.onMessage.addListener(
             console.log("Got from storage");
         }
 
-        const meanings = getMeanings(words, datuk);
+        let meanings = getMeanings(words, datuk);
 
         console.log(meanings);
+
+        meanings = meanings.filter(element => element.meaning.length > 0);
+
+        if (meanings.length < 1) return false;
 
         browser.storage.local.set({ meanings: meanings });
 
@@ -55,10 +59,17 @@ browser.menus.onClicked.addListener(async (info) => {
 
     if (info.menuItemId != "find-malo") return;
 
-    if (!info.selectionText) return;
+    let text: string;
 
-    const text = info.selectionText;
+    if (!info.selectionText) {
+        text = (await browser.storage.local.get("message")).message.word;
 
+        if (text.length < 1) return false;
+    } else {
+
+        text = info.selectionText;
+
+    }
     const words = en2ml(text);
 
     console.log(words);
@@ -69,9 +80,11 @@ browser.menus.onClicked.addListener(async (info) => {
         )
     ).json()) as dictionary[];
 
-    const meanings = getMeanings(words, datuk);
+    let meanings = getMeanings(words, datuk);
 
     console.log(meanings);
+
+    meanings = meanings.filter(element => element.meaning.length > 0);
 
     browser.storage.local.set({ meanings: meanings });
 });

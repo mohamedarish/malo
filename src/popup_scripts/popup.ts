@@ -5,7 +5,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         meanings: meangings[];
     };
 
-    if (!meanings.meanings || meanings.meanings.length < 1) return;
+    if (!meanings.meanings || meanings.meanings.length < 1) {
+        return;
+    }
 
     const the_word = document.getElementById("the-word");
 
