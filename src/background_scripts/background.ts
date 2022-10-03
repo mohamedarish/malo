@@ -3,36 +3,36 @@ import getMeanings from "../dictionary/fetchData";
 import contentMessage from "../types/contentMessage";
 import dictionary from "../types/dictionary";
 
-browser.runtime.onMessage.addListener(
-    async (message: contentMessage) => {
-        const selection = message.word;
+browser.runtime.onMessage.addListener(async (message: contentMessage) => {
+    const selection = message.word;
 
-        if (message.sender != "content_script") return;
+    if (message.sender != "content_script") return true;
 
-        const words = en2ml(selection);
+    const words = en2ml(selection);
 
-        let datuk = (await browser.storage.local.get("datuk")).datuk;
+    let datuk = (await browser.storage.local.get("datuk")).datuk;
 
-        if (!datuk) {
-            console.log("Fetched from github");
-            datuk = (await (
-                await fetch(
-                    "https://raw.githubusercontent.com/mohamedarish/ml2ml-dictionary/main/dictionary.json"
-                )
-            ).json()) as dictionary[];
+    if (!datuk) {
+        console.log("Fetched from github");
+        datuk = (await (
+            await fetch(
+                "https://raw.githubusercontent.com/mohamedarish/ml2ml-dictionary/main/dictionary.json"
+            )
+        ).json()) as dictionary[];
 
-            browser.storage.local.set({ "datuk": datuk });
-        }
-
-        let meanings = getMeanings(words, datuk);
-
-        meanings = meanings.filter(element => element.meaning.length > 0);
-
-        if (meanings.length < 1) return;
-
-        browser.storage.local.set({ meanings: meanings });
+        browser.storage.local.set({ datuk: datuk });
     }
-);
+
+    let meanings = getMeanings(words, datuk);
+
+    meanings = meanings.filter((element) => element.meaning.length > 0);
+
+    if (meanings.length < 1) true;
+
+    browser.storage.local.set({ meanings: meanings });
+
+    return true;
+});
 
 browser.menus.create({
     id: "find-malo",
@@ -41,16 +41,16 @@ browser.menus.create({
 });
 
 browser.menus.onClicked.addListener(async (info) => {
-    if (!info) return;
+    if (!info) return true;
 
-    if (info.menuItemId != "find-malo") return;
+    if (info.menuItemId != "find-malo") return true;
 
     let text: string;
 
     if (!info.selectionText) {
         text = (await browser.storage.local.get("message")).message.word;
 
-        if (text.length < 1) return;
+        if (text.length < 1) return true;
     } else {
         text = info.selectionText;
     }
@@ -65,12 +65,14 @@ browser.menus.onClicked.addListener(async (info) => {
             )
         ).json()) as dictionary[];
 
-        browser.storage.local.set({ "datuk": datuk });
+        browser.storage.local.set({ datuk: datuk });
     }
 
     let meanings = getMeanings(words, datuk);
 
-    meanings = meanings.filter(element => element.meaning.length > 0);
+    meanings = meanings.filter((element) => element.meaning.length > 0);
 
     browser.storage.local.set({ meanings: meanings });
+
+    return true;
 });

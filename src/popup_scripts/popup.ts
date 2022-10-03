@@ -6,12 +6,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     };
 
     if (!meanings.meanings || meanings.meanings.length < 1) {
-        return;
+        return true;
     }
 
     const the_word = document.getElementById("the-word");
 
-    if (!the_word) return;
+    if (!the_word) return true;
 
     the_word.innerText = "Word: " + meanings.meanings[0].word;
 
@@ -45,7 +45,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                     );
                     const alert = document.getElementById("alert");
 
-                    if (!alert) return;
+                    if (!alert) return true;
 
                     alert.classList.add("visible");
 
