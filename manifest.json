@@ -26,7 +26,7 @@
     "permissions": ["menus", "activeTab", "tabs", "storage"],
     "browser_specific_settings": {
         "gecko": {
-            "id": "malo@mohamedarish.tech",
+            "id": "{55a4d2df-55ec-40e8-bbf7-90db9a01716e}",
             "strict_min_version": "109.0"
         }
     }
