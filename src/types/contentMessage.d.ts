@@ -1,6 +1,4 @@
-interface contentMessage {
+export type contentMessage = {
     word: string;
     sender: string;
-}
-
-export default contentMessage;
+};

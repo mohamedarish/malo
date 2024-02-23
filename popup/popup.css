@@ -57,7 +57,13 @@ body.dark {
     background-color: transparent;
     cursor: pointer;
     border: 0 none transparent;
+    float: right;
+    transform: translateY(-20px);
 }
+.wordMal {
+    font-size: x-large;
+}
+
 #item-button img {
     height: 100%;
 }

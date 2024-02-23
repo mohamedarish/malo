@@ -1,5 +1,8 @@
-interface DefineAPI {
-    meanings: string[];
-}
+export type Meaning = {
+    word: string;
+    meanings: string[][] | [];
+};
 
-export default DefineAPI;
+export type DefineAPI = {
+    meanings: Meaning[];
+};

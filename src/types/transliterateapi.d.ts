@@ -1,3 +1,3 @@
-interface TransliterateAPI {
+export type TransliterateAPI = {
     result: string[];
-}
+};

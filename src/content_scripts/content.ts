@@ -7,7 +7,6 @@ window.addEventListener("mouseup", async () => {
 
     const message = {
         word: selection.toString(),
-        sender: "content_script",
     };
 
     browser.runtime.sendMessage({ message });

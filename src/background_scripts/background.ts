@@ -1,13 +1,20 @@
-import contentMessage from "../types/contentMessage";
-import DefineAPI from "../types/defineapi";
+import { contentMessage } from "../types/contentMessage";
+import { DefineAPI, Meaning } from "../types/defineapi";
+import { TransliterateAPI } from "../types/transliterateapi";
+
+const getAccumulativeNumber = (obj: Meaning): number => {
+    let len = 0;
+
+    obj.meanings.forEach((arr) => {
+        len += arr.length;
+    });
+
+    return len;
+};
 
 browser.runtime.onMessage.addListener(
     async (message: { message: contentMessage }) => {
         const selection = message.message.word;
-
-        if (message.message.sender != "content_script") return true;
-
-        console.log("selectipon", selection);
 
         const response_words = await fetch(
             "https://malo.mohamedarish.tech/rtrnsltrt",
@@ -26,8 +33,6 @@ browser.runtime.onMessage.addListener(
 
         const words = (await response_words.json()) as TransliterateAPI;
 
-        console.log("words", words);
-
         const response_define = await fetch(
             "https://malo.mohamedarish.tech/define",
             {
@@ -45,14 +50,14 @@ browser.runtime.onMessage.addListener(
 
         const meanings = (await response_define.json()) as DefineAPI;
 
-        console.log("meanings", meanings);
-
-        browser.storage.local.set({
-            word: { english: selection, malayalam: words.result },
-            meanings: meanings.meanings,
+        meanings.meanings.sort((a, b) => {
+            return getAccumulativeNumber(b) - getAccumulativeNumber(a);
         });
 
-        return true;
+        browser.storage.local.set({
+            word: selection,
+            meanings: meanings.meanings.filter((m) => m.meanings.length > 0),
+        });
     }
 );
 
@@ -68,8 +73,6 @@ browser.menus.onClicked.addListener(async (info) => {
     if (info.menuItemId != "find-malo") return;
 
     const text = info.selectionText;
-
-    console.log("selection", text);
 
     const response_words = await fetch(
         "https://malo.mohamedarish.tech/rtrnsltrt",
@@ -88,8 +91,6 @@ browser.menus.onClicked.addListener(async (info) => {
 
     const words = (await response_words.json()) as TransliterateAPI;
 
-    console.log("words", words);
-
     const response_define = await fetch(
         "https://malo.mohamedarish.tech/define",
         {
@@ -107,10 +108,12 @@ browser.menus.onClicked.addListener(async (info) => {
 
     const meanings = (await response_define.json()) as DefineAPI;
 
-    console.log("meanings", meanings);
+    meanings.meanings.sort((a, b) => {
+        return getAccumulativeNumber(b) - getAccumulativeNumber(a);
+    });
 
     browser.storage.local.set({
-        word: { english: text, malayalam: words.result },
-        meanings: meanings.meanings,
+        word: text,
+        meanings: meanings.meanings.filter((m) => m.meanings.length > 0),
     });
 });

@@ -10,7 +10,7 @@
         "bundle": "npx webpack",
         "ts": "tsc"
     },
-    "author": "arish",
+    "author": "arish<arish1248@gmail.com>",
     "license": "MIT",
     "devDependencies": {
         "@types/firefox-webext-browser": "^94.0.1",

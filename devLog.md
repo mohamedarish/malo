@@ -18,3 +18,4 @@
 - 28/9 Went live yesterday and it is still awaiting approval. When the addon gets approved, I will move all the Updates to another file called devLogs.md and shall make this readme more technical.
 - 1/10 BSNL broadband wifi gone, so now we have BSNL fiber wifi. Still bad but not as bad.
 - 4/10 Restarting development after my current project because this makes firefox crash.
+- 23/2 Fin creating the server and implemented the server.
