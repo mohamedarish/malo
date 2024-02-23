@@ -23,5 +23,11 @@
     "background": {
         "scripts": ["./dist/background_scripts/index.js"]
     },
-    "permissions": ["menus", "activeTab", "tabs", "storage"]
+    "permissions": ["menus", "activeTab", "tabs", "storage"],
+    "browser_specific_settings": {
+        "gecko": {
+            "id": "malo@mohamedarish.tech",
+            "strict_min_version": "109.0"
+        }
+    }
 }
