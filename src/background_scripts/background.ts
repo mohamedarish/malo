@@ -1,38 +1,60 @@
-import en2ml from "../convertor/convert";
-import getMeanings from "../dictionary/fetchData";
 import contentMessage from "../types/contentMessage";
-import dictionary from "../types/dictionary";
+import DefineAPI from "../types/defineapi";
 
-browser.runtime.onMessage.addListener(async (message: contentMessage) => {
-    const selection = message.word;
+browser.runtime.onMessage.addListener(
+    async (message: { message: contentMessage }) => {
+        const selection = message.message.word;
 
-    if (message.sender != "content_script") return true;
+        if (message.message.sender != "content_script") return true;
 
-    const words = en2ml(selection);
+        console.log("selectipon", selection);
 
-    let datuk = (await browser.storage.local.get("datuk")).datuk;
+        const response_words = await fetch(
+            "https://malo.mohamedarish.tech/rtrnsltrt",
+            {
+                headers: new Headers({
+                    "content-type": "application/json",
+                    "Access-Control-Allow-Origin": "*",
+                }),
+                mode: "cors",
+                method: "POST",
+                body: JSON.stringify({
+                    word: selection,
+                }),
+            }
+        );
 
-    if (!datuk) {
-        console.log("Fetched from github");
-        datuk = (await (
-            await fetch(
-                "https://raw.githubusercontent.com/mohamedarish/ml2ml-dictionary/main/dictionary.json"
-            )
-        ).json()) as dictionary[];
+        const words = (await response_words.json()) as TransliterateAPI;
 
-        browser.storage.local.set({ datuk: datuk });
+        console.log("words", words);
+
+        const response_define = await fetch(
+            "https://malo.mohamedarish.tech/define",
+            {
+                headers: new Headers({
+                    "content-type": "application/json",
+                    "Access-Control-Allow-Origin": "*",
+                }),
+                mode: "cors",
+                method: "POST",
+                body: JSON.stringify({
+                    words: words.result,
+                }),
+            }
+        );
+
+        const meanings = (await response_define.json()) as DefineAPI;
+
+        console.log("meanings", meanings);
+
+        browser.storage.local.set({
+            word: { english: selection, malayalam: words.result },
+            meanings: meanings.meanings,
+        });
+
+        return true;
     }
-
-    let meanings = getMeanings(words, datuk);
-
-    meanings = meanings.filter((element) => element.meaning.length > 0);
-
-    if (meanings.length < 1) true;
-
-    browser.storage.local.set({ meanings: meanings });
-
-    return true;
-});
+);
 
 browser.menus.create({
     id: "find-malo",
@@ -41,38 +63,54 @@ browser.menus.create({
 });
 
 browser.menus.onClicked.addListener(async (info) => {
-    if (!info) return true;
+    if (!info) return;
 
-    if (info.menuItemId != "find-malo") return true;
+    if (info.menuItemId != "find-malo") return;
 
-    let text: string;
+    const text = info.selectionText;
 
-    if (!info.selectionText) {
-        text = (await browser.storage.local.get("message")).message.word;
+    console.log("selection", text);
 
-        if (text.length < 1) return true;
-    } else {
-        text = info.selectionText;
-    }
-    const words = en2ml(text);
+    const response_words = await fetch(
+        "https://malo.mohamedarish.tech/rtrnsltrt",
+        {
+            headers: new Headers({
+                "content-type": "application/json",
+                "Access-Control-Allow-Origin": "*",
+            }),
+            mode: "cors",
+            method: "POST",
+            body: JSON.stringify({
+                word: text,
+            }),
+        }
+    );
 
-    let datuk = (await browser.storage.local.get("datuk")).datuk;
+    const words = (await response_words.json()) as TransliterateAPI;
 
-    if (!datuk) {
-        datuk = (await (
-            await fetch(
-                "https://raw.githubusercontent.com/mohamedarish/ml2ml-dictionary/main/dictionary.json"
-            )
-        ).json()) as dictionary[];
+    console.log("words", words);
 
-        browser.storage.local.set({ datuk: datuk });
-    }
+    const response_define = await fetch(
+        "https://malo.mohamedarish.tech/define",
+        {
+            headers: new Headers({
+                "content-type": "application/json",
+                "Access-Control-Allow-Origin": "*",
+            }),
+            mode: "cors",
+            method: "POST",
+            body: JSON.stringify({
+                words: words.result,
+            }),
+        }
+    );
 
-    let meanings = getMeanings(words, datuk);
+    const meanings = (await response_define.json()) as DefineAPI;
 
-    meanings = meanings.filter((element) => element.meaning.length > 0);
+    console.log("meanings", meanings);
 
-    browser.storage.local.set({ meanings: meanings });
-
-    return true;
+    browser.storage.local.set({
+        word: { english: text, malayalam: words.result },
+        meanings: meanings.meanings,
+    });
 });

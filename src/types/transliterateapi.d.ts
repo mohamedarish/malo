@@ -1,0 +1,3 @@
+interface TransliterateAPI {
+    result: string[];
+}
