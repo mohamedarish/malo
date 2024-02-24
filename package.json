@@ -4,7 +4,6 @@
     "description": "manglish to malayalam and meanings",
     "main": "dist/index.js",
     "scripts": {
-        "serve": "ts-node src/convertor/convert.ts",
         "lint": "eslint ./src --ext .ts",
         "format": "prettier --write ./src",
         "bundle": "npx webpack",
