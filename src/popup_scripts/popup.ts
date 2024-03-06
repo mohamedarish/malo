@@ -1,176 +1,137 @@
 import { Meaning } from "../types/defineapi";
 
-const setTheme = async () => {
-    const themeSet = await browser.storage.local.get("theme");
+const themeSwitcher = document.getElementById("themeSwitcher");
 
-    if (themeSet && themeSet.theme == "dark") {
-        const checkbox = document.getElementById("checkbox");
+const changeElements = (theme: string) => {
+    const copyImage = document.querySelectorAll(".copy");
 
-        if (checkbox) {
-            (checkbox as HTMLInputElement).checked = true;
-        }
+    for (let i = 0; i < copyImage.length; i += 1) {
+        copyImage[i].setAttribute("src", `../icons/copy-${theme}.png`);
+    }
 
-        document.body.classList.toggle("dark");
-        const olamHeader = document.getElementById("olam-header");
-        if (!olamHeader) return;
-        olamHeader.classList.toggle("dark");
-        const labelElement = document.getElementById("label");
-        if (!labelElement) return;
-        labelElement.classList.toggle("dark");
-        const ballToggler = document.getElementById("ball");
-        if (!ballToggler) return;
-        ballToggler.classList.toggle("dark");
+    const themeSwitcher = document.getElementById("themeSwitcher");
 
-        const copyImages = document.querySelectorAll(".copy-image");
+    if (themeSwitcher) {
+        themeSwitcher.setAttribute("src", `../icons/${theme}-mode.png`);
+    }
 
-        for (let i = 0; i < copyImages.length; i += 1) {
-            copyImages[i].setAttribute("src", "../icons/copy-dark.png");
-        }
+    if (theme !== "dark") {
+        document.body.classList.remove("dark");
+    } else {
+        document.body.classList.add("dark");
     }
 };
 
-document.addEventListener("DOMContentLoaded", async () => {
-    await setTheme();
+if (themeSwitcher) {
+    themeSwitcher.addEventListener("click", async () => {
+        const currentTheme = await browser.storage.local.get("theme");
 
-    const theme = await browser.storage.local.get("theme");
+        if (!currentTheme || currentTheme.theme !== "dark") {
+            browser.storage.local.set({ theme: "dark" });
+            changeElements("dark");
+        } else {
+            browser.storage.local.remove("theme");
+            changeElements("light");
+        }
+    });
+}
+
+document.addEventListener("DOMContentLoaded", async () => {
+    const currentTheme = await browser.storage.local.get("theme");
+
+    if (currentTheme && currentTheme.theme === "dark") {
+        changeElements("dark");
+    }
 
     const meanings = (await browser.storage.local.get("meanings")) as {
         meanings: Meaning[];
     };
 
-    const word = (await browser.storage.local.get("word")) as {
-        word: string;
-    };
+    const word = (await browser.storage.local.get("word")) as { word: string };
 
-    const the_word = document.getElementById("the-word");
+    const wordHolder = document.getElementById("word");
 
-    if (!the_word) return true;
-
-    the_word.innerText = "Word: " + word.word;
-
-    const myUI = document.getElementById("list-items");
-
-    // if (myUI) {
-    // myUI.innerText += JSON.stringify(meanings.meanings);
-    // }
+    if (wordHolder) {
+        wordHolder.innerText = word.word;
+    }
 
     if (meanings.meanings.length < 1) {
-        const el = document.createElement("li");
+        const list = document.getElementById("list");
 
-        el.innerText += "അർത്ഥം കണ്ടെത്താൻ കഴിയുന്നില്ല";
-        el.id = "list-item";
+        if (list) {
+            const list_element = document.createElement("li");
+            list_element.innerText = "അർത്ഥം കണ്ടെത്താൻ കഴിയുന്നില്ല";
 
-        if (myUI) {
-            myUI.appendChild(el);
+            list.appendChild(list_element);
+            return;
         }
-    } else {
-        meanings.meanings.forEach((meaning) => {
-            const meaning_holder = document.createElement("li");
+    }
 
-            const heading = document.createElement("h3");
-            heading.innerText = meaning.word;
+    meanings.meanings.forEach((word_instance) => {
+        const list = document.getElementById("list");
 
-            heading.className = "wordMal";
+        if (list) {
+            const list_element = document.createElement("li");
 
-            const list_of_meanings = document.createElement("ol");
-            meaning.meanings.forEach((m) => {
-                const one_def_set_holder = document.createElement("li");
+            const word_instance_holder = document.createElement("span");
+            word_instance_holder.innerText = word_instance.word;
 
-                const one_def_set = document.createElement("ul");
+            const copy_image = document.createElement("img");
+            copy_image.setAttribute(
+                "src",
+                `../icons/copy-${
+                    currentTheme.theme ? currentTheme.theme : "light"
+                }.png`
+            );
+            copy_image.setAttribute("alt", "Copy");
+            copy_image.classList.add("copy");
 
-                m.forEach((me) => {
-                    const one_def = document.createElement("li");
+            copy_image.addEventListener("click", () => {
+                navigator.clipboard.writeText(word_instance.word);
 
-                    one_def.innerText += me;
+                const copyAlert = document.getElementById("alert");
 
-                    one_def_set.appendChild(one_def);
+                if (copyAlert) {
+                    copyAlert.classList.add("visible");
+
+                    setTimeout(() => {
+                        copyAlert.classList.remove("visible");
+                    }, 1500);
+                }
+            });
+
+            word_instance_holder.appendChild(copy_image);
+
+            list_element.appendChild(word_instance_holder);
+
+            word_instance.meanings.forEach((meaning_instance) => {
+                const meaning_instance_holder = document.createElement("ul");
+
+                meaning_instance.forEach((meaning) => {
+                    const meaning_holder = document.createElement("li");
+                    meaning_holder.innerText = meaning;
+
+                    meaning_instance_holder.appendChild(meaning_holder);
                 });
 
-                one_def_set_holder.appendChild(one_def_set);
-
-                list_of_meanings.appendChild(one_def_set);
+                list_element.appendChild(meaning_instance_holder);
             });
 
-            const btn = document.createElement("button");
-
-            const img = document.createElement("img");
-
-            img.className = "copy-image";
-            if (theme && theme.theme == "dark") {
-                img.setAttribute("src", "../icons/copy-dark.png");
-            } else {
-                img.setAttribute("src", "../icons/copy-light.png");
-            }
-
-            btn.appendChild(img);
-
-            btn.id = "item-button";
-            btn.addEventListener("click", function copyButtonFn() {
-                navigator.clipboard.writeText(meaning.word);
-                const alert = document.getElementById("alert");
-
-                if (!alert) return;
-
-                alert.classList.add("visible");
-
-                setTimeout(() => {
-                    alert.classList.remove("visible");
-                }, 1500);
-            });
-
-            meaning_holder.appendChild(heading);
-            meaning_holder.appendChild(btn);
-            meaning_holder.appendChild(list_of_meanings);
-
-            const horizontal_rule = document.createElement("hr");
-
-            meaning_holder.appendChild(horizontal_rule);
-
-            if (myUI) {
-                myUI.appendChild(meaning_holder);
-            }
-        });
-    }
+            list.appendChild(list_element);
+        }
+    });
 });
 
-// if (meanings.meanings.length == 0) {
-//     const el = document.createElement("li"),
-//         myUl = document.getElementById("list-items");
-//     el.innerText += "അർത്ഥം കണ്ടെത്താൻ കഴിയുന്നില്ല";
-//     el.id = "list-item";
-//     if (myUl != null) {
-//         myUl.appendChild(el);
-//     }
-// } else {
-//     for (let i = 0; i < meanings.meanings.length; i++) {
-//         const el = document.createElement("li"),
-//             btn = document.createElement("button"),
-//             content = document.createTextNode(meanings.meanings[i]),
-//             myUl = document.getElementById("list-items");
+// For alert
+//             btn.addEventListener("click", function copyButtonFn() {
+//                 navigator.clipboard.writeText(meaning.word);
+//                 const alert = document.getElementById("alert");
 
-//         const img = document.createElement("img");
-//         img.setAttribute("src", "../icons/copy-light.png");
+//                 if (!alert) return;
 
-//         btn.appendChild(img);
+//                 alert.classList.add("visible");
 
-//         btn.id = "item-button";
-//         btn.addEventListener("click", function copyButtonFn() {
-//             navigator.clipboard.writeText(meanings.meanings[i]);
-//             const alert = document.getElementById("alert");
-
-//             if (!alert) return true;
-
-//             alert.classList.add("visible");
-
-//             setTimeout(() => {
-//                 alert.classList.remove("visible");
-//             }, 1500);
-//         });
-//         el.appendChild(content);
-//         el.appendChild(btn);
-//         el.id = "list-item";
-//         if (myUl != null) {
-//             myUl.appendChild(el);
-//         }
-//     }
-// }
+//                 setTimeout(() => {
+//                     alert.classList.remove("visible");
+//                 }, 1500);
+//             });

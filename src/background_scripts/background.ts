@@ -112,6 +112,11 @@ browser.menus.onClicked.addListener(async (info) => {
         return getAccumulativeNumber(b) - getAccumulativeNumber(a);
     });
 
+    console.table({
+        word: text,
+        meanings: meanings.meanings.filter((m) => m.meanings.length > 0),
+    });
+
     browser.storage.local.set({
         word: text,
         meanings: meanings.meanings.filter((m) => m.meanings.length > 0),

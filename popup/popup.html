@@ -5,21 +5,20 @@
         <link rel="stylesheet" href="./popup.css" />
     </head>
     <body>
-        <div class="olam-header" id="olam-header">
-            <h1 class="olam-title">മാലോ</h1>
-            <div class="right-side">
-                <input type="checkbox" class="checkbox" id="checkbox" />
-                <label for="checkbox" class="label" id="label">
-                    <img src="../icons/dark-mode.png" />
-                    <img src="../icons/light-mode.png" />
-                    <div class="ball" id="ball"></div>
-                </label>
+        <nav>
+            <span id="head"> മാലോ </span>
+
+            <img src="../icons/light-mode.png" alt="Dark" id="themeSwitcher"/>
+        </nav>
+        <div id="main">
+            <div>Selected word: <b id="word">Actual word</b></div>
+            <hr />
+            <div id="list-holder">
+                <ol id="list">
+                </ol>
             </div>
         </div>
-        <h3 id="the-word"></h3>
-        <ul id="list-items"></ul>
-        <span class="alert" id="alert">Copied!</span>
+        <span id="alert">Copied!</span>
     </body>
     <script src="../dist/popup_scripts/index.js"></script>
-    <script src="../dist/theme_scripts/index.js"></script>
 </html>
