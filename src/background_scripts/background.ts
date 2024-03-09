@@ -16,37 +16,39 @@ browser.runtime.onMessage.addListener(
     async (message: { message: contentMessage }) => {
         const selection = message.message.word;
 
-        const response_words = await fetch(
-            "https://malo.mohamedarish.tech/rtrnsltrt",
-            {
-                headers: new Headers({
-                    "content-type": "application/json",
-                    "Access-Control-Allow-Origin": "*",
-                }),
-                mode: "cors",
-                method: "POST",
-                body: JSON.stringify({
-                    word: selection,
-                }),
-            }
-        );
+        let { server } = (await browser.storage.local.get("server")) as {
+            server: string;
+        };
+
+        if (!server) {
+            server = "https://malo.mohamedarish.tech";
+        }
+
+        const response_words = await fetch(`${server}/rtrnsltrt`, {
+            headers: new Headers({
+                "content-type": "application/json",
+                "Access-Control-Allow-Origin": "*",
+            }),
+            mode: "cors",
+            method: "POST",
+            body: JSON.stringify({
+                word: selection,
+            }),
+        });
 
         const words = (await response_words.json()) as TransliterateAPI;
 
-        const response_define = await fetch(
-            "https://malo.mohamedarish.tech/define",
-            {
-                headers: new Headers({
-                    "content-type": "application/json",
-                    "Access-Control-Allow-Origin": "*",
-                }),
-                mode: "cors",
-                method: "POST",
-                body: JSON.stringify({
-                    words: words.result,
-                }),
-            }
-        );
+        const response_define = await fetch(`${server}/define`, {
+            headers: new Headers({
+                "content-type": "application/json",
+                "Access-Control-Allow-Origin": "*",
+            }),
+            mode: "cors",
+            method: "POST",
+            body: JSON.stringify({
+                words: words.result,
+            }),
+        });
 
         const meanings = (await response_define.json()) as DefineAPI;
 
@@ -72,39 +74,41 @@ browser.menus.onClicked.addListener(async (info) => {
 
     if (info.menuItemId != "find-malo") return;
 
+    let { server } = (await browser.storage.local.get("server")) as {
+        server: string;
+    };
+
+    if (!server) {
+        server = "https://malo.mohamedarish.tech";
+    }
+
     const text = info.selectionText;
 
-    const response_words = await fetch(
-        "https://malo.mohamedarish.tech/rtrnsltrt",
-        {
-            headers: new Headers({
-                "content-type": "application/json",
-                "Access-Control-Allow-Origin": "*",
-            }),
-            mode: "cors",
-            method: "POST",
-            body: JSON.stringify({
-                word: text,
-            }),
-        }
-    );
+    const response_words = await fetch(`${server}/rtrnsltrt`, {
+        headers: new Headers({
+            "content-type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+        }),
+        mode: "cors",
+        method: "POST",
+        body: JSON.stringify({
+            word: text,
+        }),
+    });
 
     const words = (await response_words.json()) as TransliterateAPI;
 
-    const response_define = await fetch(
-        "https://malo.mohamedarish.tech/define",
-        {
-            headers: new Headers({
-                "content-type": "application/json",
-                "Access-Control-Allow-Origin": "*",
-            }),
-            mode: "cors",
-            method: "POST",
-            body: JSON.stringify({
-                words: words.result,
-            }),
-        }
-    );
+    const response_define = await fetch(`${server}/define`, {
+        headers: new Headers({
+            "content-type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+        }),
+        mode: "cors",
+        method: "POST",
+        body: JSON.stringify({
+            words: words.result,
+        }),
+    });
 
     const meanings = (await response_define.json()) as DefineAPI;
 

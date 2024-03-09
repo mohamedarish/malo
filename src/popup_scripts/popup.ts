@@ -36,6 +36,88 @@ if (themeSwitcher) {
     });
 }
 
+const selectionMenuMeanings = document.getElementById("mean");
+const selectonMenuSettings = document.getElementById("settings");
+
+if (selectionMenuMeanings) {
+    selectionMenuMeanings.addEventListener("click", () => {
+        const meaningsMenu = document.getElementById("main");
+        const settingsMenu = document.getElementById("settings-menu");
+
+        if (meaningsMenu && settingsMenu) {
+            if (meaningsMenu.classList.contains("hidd")) {
+                meaningsMenu.classList.remove("hidd");
+                settingsMenu.classList.add("hidd");
+            }
+        }
+
+        if (
+            selectionMenuMeanings.classList.contains("not-selected") &&
+            !selectionMenuMeanings.classList.contains("selected")
+        ) {
+            selectionMenuMeanings.classList.remove("not-selected");
+            selectionMenuMeanings.classList.add("selected");
+        }
+        if (
+            selectonMenuSettings &&
+            selectonMenuSettings.classList.contains("selected") &&
+            !selectonMenuSettings.classList.contains("not-selected")
+        ) {
+            selectonMenuSettings.classList.remove("selected");
+            selectonMenuSettings.classList.add("not-selected");
+        }
+    });
+}
+
+if (selectonMenuSettings) {
+    selectonMenuSettings.addEventListener("click", () => {
+        const meaningsMenu = document.getElementById("main");
+        const settingsMenu = document.getElementById("settings-menu");
+
+        if (meaningsMenu && settingsMenu) {
+            if (settingsMenu.classList.contains("hidd")) {
+                settingsMenu.classList.remove("hidd");
+                meaningsMenu.classList.add("hidd");
+            }
+        }
+
+        if (
+            selectonMenuSettings.classList.contains("not-selected") &&
+            !selectonMenuSettings.classList.contains("selected")
+        ) {
+            selectonMenuSettings.classList.remove("not-selected");
+            selectonMenuSettings.classList.add("selected");
+        }
+
+        if (
+            selectionMenuMeanings &&
+            selectionMenuMeanings.classList.contains("selected") &&
+            !selectionMenuMeanings.classList.contains("not-selected")
+        ) {
+            selectionMenuMeanings.classList.remove("selected");
+            selectionMenuMeanings.classList.add("not-selected");
+        }
+    });
+}
+
+const urlUpdater = document.getElementById("update");
+
+if (urlUpdater) {
+    urlUpdater.addEventListener("click", (event) => {
+        event.preventDefault();
+
+        const urlForm = document.getElementById("site") as HTMLInputElement;
+
+        if (urlForm) {
+            console.log(urlForm.value);
+
+            browser.storage.local.set({
+                server: urlForm.value,
+            });
+        }
+    });
+}
+
 document.addEventListener("DOMContentLoaded", async () => {
     const currentTheme = await browser.storage.local.get("theme");
 
@@ -121,17 +203,3 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     });
 });
-
-// For alert
-//             btn.addEventListener("click", function copyButtonFn() {
-//                 navigator.clipboard.writeText(meaning.word);
-//                 const alert = document.getElementById("alert");
-
-//                 if (!alert) return;
-
-//                 alert.classList.add("visible");
-
-//                 setTimeout(() => {
-//                     alert.classList.remove("visible");
-//                 }, 1500);
-//             });

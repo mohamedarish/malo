@@ -1,6 +1,6 @@
 {
     "name": "malo",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "manglish to malayalam and meanings",
     "main": "dist/index.js",
     "scripts": {

@@ -8,15 +8,24 @@
         <nav>
             <span id="head"> മാലോ </span>
 
-            <img src="../icons/light-mode.png" alt="Dark" id="themeSwitcher"/>
+            <img src="../icons/light-mode.png" alt="Dark" id="themeSwitcher" />
         </nav>
+
         <div id="main">
             <div>Selected word: <b id="word">Actual word</b></div>
             <hr />
             <div id="list-holder">
-                <ol id="list">
-                </ol>
+                <ol id="list"></ol>
             </div>
+        </div>
+        <div id="settings-menu" class="hidd">
+            <label for="text"> Enter Server URL </label>
+            <input type="text" name="site" id="site" />
+            <input type="button" value="Update" id="update" />
+        </div>
+        <div id="section">
+            <span id="mean" class="selected"> Meanings </span>
+            <span id="settings" class="not-selected"> Settings </span>
         </div>
         <span id="alert">Copied!</span>
     </body>
