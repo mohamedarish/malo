@@ -178,7 +178,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     const urlForm = document.getElementById("site") as HTMLInputElement;
     if (urlForm) {
         if (server.server.length < 1) {
-            urlForm.placeholder = "http://localhost:3030 (default)";
+            urlForm.placeholder =
+                "https://malo-server-amd64.onrender.com (default)";
         } else {
             urlForm.placeholder = server.server;
         }

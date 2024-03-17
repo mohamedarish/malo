@@ -21,7 +21,7 @@ browser.runtime.onMessage.addListener(
         };
 
         if (!server || !server.startsWith("http")) {
-            server = "https://localhost:3030";
+            server = "https://malo-server-amd64.onrender.com";
         }
 
         try {
@@ -96,7 +96,7 @@ browser.menus.onClicked.addListener(async (info) => {
     };
 
     if (!server || !server.startsWith("http")) {
-        server = "http://localhost:3030";
+        server = "https://malo-server-amd64.onrender.com";
     }
 
     try {
