@@ -34,7 +34,7 @@ browser.runtime.onMessage.addListener(
 
             const test = await test_request.text();
 
-            if (test !== "The server is running!") {
+            if (test !== "The server is running!\n") {
                 return;
             }
         } catch (err) {
@@ -109,7 +109,7 @@ browser.menus.onClicked.addListener(async (info) => {
 
         const test = await test_request.text();
 
-        if (test !== "The server is running!") {
+        if (test !== "The server is running!\n") {
             return;
         }
     } catch (err) {
