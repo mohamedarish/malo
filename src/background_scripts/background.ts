@@ -16,13 +16,16 @@ browser.runtime.onMessage.addListener(
     async (message: { message: contentMessage }) => {
         const selection = message.message.word;
 
-        let { server } = (await browser.storage.local.get("server")) as {
+        const server_storage = (await browser.storage.local.get("server")) as {
             server: string;
         };
 
-        if (!server || !server.startsWith("http")) {
-            server = "https://malo-server-amd64.onrender.com";
-        }
+        const server =
+            !server_storage ||
+            !server_storage.server ||
+            !server_storage.server.startsWith("http")
+                ? "https://malo-server-amd64.onrender.com"
+                : server_storage.server;
 
         try {
             const test_request = await fetch(server, {
@@ -91,13 +94,16 @@ browser.menus.onClicked.addListener(async (info) => {
 
     if (info.menuItemId != "find-malo") return;
 
-    let { server } = (await browser.storage.local.get("server")) as {
+    const server_storage = (await browser.storage.local.get("server")) as {
         server: string;
     };
 
-    if (!server || !server.startsWith("http")) {
-        server = "https://malo-server-amd64.onrender.com";
-    }
+    const server =
+        !server_storage ||
+        !server_storage.server ||
+        !server_storage.server.startsWith("http")
+            ? "https://malo-server-amd64.onrender.com"
+            : server_storage.server;
 
     try {
         const test_request = await fetch(server, {
