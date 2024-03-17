@@ -20,8 +20,25 @@ browser.runtime.onMessage.addListener(
             server: string;
         };
 
-        if (!server) {
-            server = "https://malo.mohamedarish.tech";
+        if (!server || !server.startsWith("http")) {
+            server = "https://localhost:3030";
+        }
+
+        try {
+            const test_request = await fetch(server, {
+                headers: new Headers({
+                    "Access-Control-Allow-Origin": "*",
+                }),
+                mode: "cors",
+            });
+
+            const test = await test_request.text();
+
+            if (test !== "The server is running!") {
+                return;
+            }
+        } catch (err) {
+            return;
         }
 
         const response_words = await fetch(`${server}/rtrnsltrt`, {
@@ -78,8 +95,25 @@ browser.menus.onClicked.addListener(async (info) => {
         server: string;
     };
 
-    if (!server) {
-        server = "https://malo.mohamedarish.tech";
+    if (!server || !server.startsWith("http")) {
+        server = "http://localhost:3030";
+    }
+
+    try {
+        const test_request = await fetch(server, {
+            headers: new Headers({
+                "Access-Control-Allow-Origin": "*",
+            }),
+            mode: "cors",
+        });
+
+        const test = await test_request.text();
+
+        if (test !== "The server is running!") {
+            return;
+        }
+    } catch (err) {
+        return;
     }
 
     const text = info.selectionText;
@@ -114,11 +148,6 @@ browser.menus.onClicked.addListener(async (info) => {
 
     meanings.meanings.sort((a, b) => {
         return getAccumulativeNumber(b) - getAccumulativeNumber(a);
-    });
-
-    console.table({
-        word: text,
-        meanings: meanings.meanings.filter((m) => m.meanings.length > 0),
     });
 
     browser.storage.local.set({

@@ -103,17 +103,57 @@ if (selectonMenuSettings) {
 const urlUpdater = document.getElementById("update");
 
 if (urlUpdater) {
-    urlUpdater.addEventListener("click", (event) => {
+    urlUpdater.addEventListener("click", async (event) => {
         event.preventDefault();
 
         const urlForm = document.getElementById("site") as HTMLInputElement;
 
-        if (urlForm) {
-            console.log(urlForm.value);
+        let test = "";
 
-            browser.storage.local.set({
-                server: urlForm.value,
-            });
+        if (urlForm) {
+            if (urlForm.value.length < 1) {
+                browser.storage.local.set({
+                    server: "",
+                });
+
+                return;
+            }
+            try {
+                const test_request = await fetch(`${urlForm.value}`, {
+                    headers: new Headers({
+                        "Access-Control-Allow-Origin": "*",
+                    }),
+                    mode: "cors",
+                });
+
+                test = await test_request.text();
+            } catch (err) {
+                console.error(err);
+            }
+
+            if (test == "The server is running!\n") {
+                browser.storage.local.set({
+                    server: urlForm.value,
+                });
+            } else {
+                const bad_url = document.getElementById("bad-url");
+
+                if (bad_url) {
+                    bad_url.style.setProperty("display", "block");
+                }
+            }
+        }
+    });
+}
+
+const urlForm = document.getElementById("site");
+
+if (urlForm) {
+    urlForm.addEventListener("change", () => {
+        const bad_url = document.getElementById("bad-url");
+
+        if (bad_url) {
+            bad_url.style.setProperty("display", "none");
         }
     });
 }
@@ -130,6 +170,19 @@ document.addEventListener("DOMContentLoaded", async () => {
     };
 
     const word = (await browser.storage.local.get("word")) as { word: string };
+
+    const server = (await browser.storage.local.get("server")) as {
+        server: string;
+    };
+
+    const urlForm = document.getElementById("site") as HTMLInputElement;
+    if (urlForm) {
+        if (server.server.length < 1) {
+            urlForm.placeholder = "http://localhost:3030 (default)";
+        } else {
+            urlForm.placeholder = server.server;
+        }
+    }
 
     const wordHolder = document.getElementById("word");
 

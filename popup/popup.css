@@ -32,15 +32,7 @@ body {
         justify-content: space-around;
         padding: 5px 0;
 
-        span#mean {
-            width: 45%;
-            display: flex;
-            border-radius: 4px;
-            justify-content: center;
-            cursor: pointer;
-            padding: 5px;
-        }
-        span#settings {
+        span {
             width: 45%;
             display: flex;
             border-radius: 4px;
@@ -103,6 +95,18 @@ body {
             margin: 5px;
             padding: 5px;
             box-sizing: border-box;
+            border-radius: 4px;
+        }
+
+        input#site:focus {
+            outline: none;
+        }
+
+        span#bad-url {
+            color: red;
+            font-size: x-small;
+            transform: translateX(-87px);
+            display: none;
         }
 
         input#update {
@@ -110,6 +114,8 @@ body {
             padding: 5px;
             font-size: medium;
             margin: 5px;
+            border-radius: 4px;
+            cursor: pointer;
         }
     }
 
@@ -164,6 +170,15 @@ body.dark {
 
     div#settings-menu {
         background-color: #222222;
+
+        input#update {
+            background-color: rgb(23, 168, 1);
+            border: none;
+        }
+
+        input#update:hover {
+            background-color: rgb(20, 136, 2);
+        }
     }
 
     div#section {
