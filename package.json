@@ -8,7 +8,7 @@
         "format": "prettier --write ./src",
         "bundle": "npx webpack",
         "ts": "tsc",
-        "build": "npm run ts && npm run bundle && zip -r Archive.zip -r ./dist/*/index.js popup/ manifest.json",
+        "build": "npm run ts && npm run bundle && zip -r Archive.zip -r ./dist/*/index.js popup/ manifest.json icons/",
         "clean": "rm -rf ./dist/ Archive*"
     },
     "author": "arish<arish1248@gmail.com>",
